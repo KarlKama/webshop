@@ -1,0 +1,18 @@
+{
+    "admin": {
+      "add-product": "Add product",
+      "categories": "Maintain categories",
+      "products": "Edit/delete products",
+      "shops": "Maintain shops"
+    },
+    "nav": {
+      "admin": "Admin view",
+      "shops": "Our shops",
+      "contact": "Contact with us",
+      "cart": "To cart",
+      "lang": "Language",
+      "login":"Login",
+      "signup":"Sign-up"
+    }
+    
+  }

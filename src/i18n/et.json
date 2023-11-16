@@ -1,0 +1,17 @@
+{
+    "admin": {
+      "add-product": "Lisa toode",
+      "categories": "Halda kategooriaid",
+      "products": "Muuda/Kustuta tooteid",
+      "shops": "Halda poode"
+    },
+    "nav": {
+      "admin": "Admin vaade",
+      "shops": "Meie poed",
+      "contact": "Kontakteeru",
+      "cart": "Ostukorvi",
+      "lang": "Keel",
+      "login":"Logi sisse",
+      "signup":"Registreeru"
+    }
+  }

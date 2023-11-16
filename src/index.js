@@ -1,13 +1,18 @@
-import React from 'react';
+import React from 'react'; // Võtab kogu mooduli
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './css/index.css';
+import './i18n/i18n';
+import App from './App'; 
+import reportWebVitals from './util/reportWebVitals';
+import { BrowserRouter } from 'react-router-dom'; // Võtab ühe konkreetse mooduli sest kasututakse {}
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </React.StrictMode>
 );
 

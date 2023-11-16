@@ -1,3 +1,18 @@
+# Alguses
+npx create-react-app webshop
+# Et lisada routing
+npm i react-router-dom
+# Lisada Bootstrap
+https://react-bootstrap.github.io/
+npm install react-bootstrap bootstrap
+
+# i18n lisamine
+https://react.i18next.com/guides/quick-start
+npm install react-i18next i18next --save
+
+# Lisada MUI
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
