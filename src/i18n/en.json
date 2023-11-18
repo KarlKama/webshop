@@ -1,18 +1,51 @@
 {
-    "admin": {
-      "add-product": "Add product",
-      "categories": "Maintain categories",
-      "products": "Edit/delete products",
-      "shops": "Maintain shops"
-    },
-    "nav": {
-      "admin": "Admin view",
-      "shops": "Our shops",
-      "contact": "Contact with us",
-      "cart": "To cart",
-      "lang": "Language",
-      "login":"Login",
-      "signup":"Sign-up"
+  "admin": {
+    "add-product": "Add product",
+    "categories": "Maintain categories",
+    "products": "Edit/delete products",
+    "shops": "Maintain shops",
+    "delete": "Delete",
+    "update": "Update",
+    "add": "Add"
+  },
+  "nav": {
+    "admin": "Admin view",
+    "shops": "Our shops",
+    "contact": "Contact with us",
+    "cart": "To cart",
+    "lang": "Language",
+    "login":"Login",
+    "signup":"Sign-up"
+  },
+  "product": {
+    "image": "Image",
+    "name": "Name",
+    "price": "Price",
+    "description": "Description",
+    "category": "Category",
+    "active": "Active",
+    "error": {
+      "notfound": "The product was not found"
     }
-    
+  },
+  "home": {
+    "detailed": "Detailed view",
+    "add-to-cart": "Add to cart",
+    "sort-by-name": "Sort by name",
+    "sort-by-price": "Sort by price",
+    "sort-by": "Sort by",
+    "filter-by-category": "Filter by category",
+    "filter-lego": "Filter Lego",
+    "filter-star": "Filter Star Wars",
+    "filter-figure": "Filter Figure",
+    "clear-filter": "Clear filter"
+  },
+  "cart": {
+    "empty": "Empty the Cart",
+    "cart-has": "The cart has",
+    "products": "product(s)",
+    "empty-cart": "The cart is empty",
+    "view-products": "View products",
+    "total-sum": "Total amount"
   }
+}

@@ -4,8 +4,6 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { changeLanguage } from 'i18next';
-
 
 
 const NavigationBar = () => {

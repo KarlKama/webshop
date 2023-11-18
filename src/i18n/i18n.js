@@ -1,7 +1,7 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import english from "../i18n/en.json";
-import estonian from "../i18n/en.json";
+import estonian from "../i18n/et.json";
 import spanish from "../i18n/es.json";
 
 // the translations

@@ -1,17 +1,51 @@
 {
-    "admin": {
-      "add-product": "Lisa toode",
-      "categories": "Halda kategooriaid",
-      "products": "Muuda/Kustuta tooteid",
-      "shops": "Halda poode"
-    },
-    "nav": {
-      "admin": "Admin vaade",
-      "shops": "Meie poed",
-      "contact": "Kontakteeru",
-      "cart": "Ostukorvi",
-      "lang": "Keel",
-      "login":"Logi sisse",
-      "signup":"Registreeru"
+  "admin": {
+    "add-product": "Lisa toode",
+    "categories": "Halda kategooriaid",
+    "products": "Muuda/Kustuta tooteid",
+    "shops": "Halda poode",
+    "delete": "Kustuta",
+    "update": "Muuda",
+    "add": "Lisa"
+  },
+  "nav": {
+    "admin": "Admin vaade",
+    "shops": "Meie poed",
+    "contact": "Kontakteeru",
+    "cart": "Ostukorvi",
+    "lang": "Keel",
+    "login":"Logi sisse",
+    "signup":"Registreeru"
+  },
+  "product": {
+    "image": "Pilt",
+    "name": "Nimi",
+    "price": "Hind",
+    "description": "Kirjeldus",
+    "category": "Kategooria",
+    "active": "Aktiivne",
+    "error": {
+      "notfound": "Toodet ei leitud"
     }
+  },
+  "home": {
+    "detailed": "Vaata detailsemalt",
+    "add-to-cart": "Lisa ostukorvi",
+    "sort-by-name": "Sorteeri nime järgi",
+    "sort-by-price": "Sorteeri hinna järgi",
+    "sort-by": "Sorteeri",
+    "filter-by-category": "Filtreeri kategooria järgi",
+    "filter-lego": "Filtreeri Lego",
+    "filter-star": "Filtreeri Star Wars",
+    "filter-figure": "Filtreeri Figure",
+    "clear-filter": "Eemalda filter"
+  },
+  "cart": {
+    "empty": "Tühjenda ostukorv",
+    "cart-has": "Ostukorvis on ",
+    "products": "toode(t)",
+    "empty-cart": "Ostukorv on tühi",
+    "view-products": "Tooteid lisama",
+    "total-sum": "Kokku"
   }
+}
