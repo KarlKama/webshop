@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom/dist/umd/react-router-dom.development';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import productsFromFile from "../../data/products.json";
-import cartFromFile from "../../data/cart.json";
+//import cartFromFile from "../../data/cart.json";
 
 // NÕUDED
 // võimaldada minna SingleProduct lehele +
@@ -54,7 +54,7 @@ const HomePage = () => {
 
   const filterByGroup = (name) => {
     clearFilter();
-    let filteredProducts = products.filter(product => product.category === name);
+    let filteredProducts = productsCopy.filter(product => product.category === name);
     setProducts(filteredProducts);
   }
 
@@ -63,8 +63,19 @@ const HomePage = () => {
   }
 
   const addToCart = (product) => {
-    cartFromFile.push(product);
-    localStorage.setItem("cart", cartFromFile);
+    /* cartFromFile.push(product);
+    localStorage.setItem("cart", cartFromFile); */
+
+    // localStorageisse ei saa pushida/addida uusi objecte
+    // 1. võtta vana seis localStorages
+    // 2. parse-da Array kujule ehk võtta jutumärgid ära
+    // 3. lisada juurde .push()
+    // 4. paneme jutumärgid ise peale -> keerame Array stringiks
+    // 5. panna tagasi localStoragesse (set abil ehk asend uue väärtusega vana)
+
+    const cartLS = JSON.parse(localStorage.getItem("cart") || "[]"); // juhuks kui cart on tühi
+    cartLS.push(product);
+    localStorage.setItem("cart", JSON.stringify(cartLS));
   }
 
 
@@ -91,7 +102,7 @@ const HomePage = () => {
         <img src={product.image} alt="" />
         <div>{product.id}</div>
         <div>{product.name}</div>
-        <div>{product.price} €</div>
+        <div>{product.price.toFixed(2)} €</div>
         <div>{product.description}</div>
         <div>{product.category}</div>
         <div>{product.active}</div>

@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState,  useRef } from 'react'
 import productsFromFile from "../../data/products.json";
-import { Link } from 'react-router-dom/dist/umd/react-router-dom.development';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {findIndex} from '../../util/productsUtil.js';
 
@@ -10,8 +10,19 @@ import {findIndex} from '../../util/productsUtil.js';
 
 const MaintainProducts = () => {
     const { t } = useTranslation();
+    const searchedRef = useRef();
 
     const [products, setProducts] = useState(productsFromFile);
+
+    const searchFromProducts = () => {
+      const result = productsFromFile.filter(products => 
+        products.name.toLowerCase().includes(searchedRef.current.value.toLowerCase()) || 
+        products.description.toLowerCase().includes(searchedRef.current.value.toLowerCase()) ||
+        products.id.toString().includes(searchedRef.current.value)     
+      );
+      setProducts(result);
+
+    }
 
     const deleteProduct = (id) => {
       const index = findIndex(id, productsFromFile);
@@ -21,9 +32,11 @@ const MaintainProducts = () => {
 
     return (
       <div>
+        <input onChange={searchFromProducts} ref={searchedRef} type='text' />
+        <div>{products.length} tk</div>
         { 
         products.map(product =>
-        <div>
+        <div key={product.id}>
           <img src={product.image} alt="" />
           <div>{product.id}</div>
           <div>{product.name}</div>

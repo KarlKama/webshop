@@ -1,7 +1,8 @@
 import React, {useState} from 'react'
-import cartFromFile from "../../data/cart.json";
+//import cartFromFile from "../../data/cart.json";
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next';
+import ParcelMachines from '../../components/cart/ParcelMachines';
 
 
 //NÕUDED
@@ -14,25 +15,27 @@ import { useTranslation } from 'react-i18next';
 
 const Cart = () => {
 
-  const [cart, setCart] = useState(cartFromFile);
+  const [cart, setCart] = useState(JSON.parse(localStorage.getItem("cart") || "[]"));
   const { t } = useTranslation();
+  
 
   const emptyCart = () => {
     cart.splice(0);
     setCart(cart.slice());
+    localStorage.setItem("cart", JSON.stringify(cart)); // uuendame ostukorvi
   }
 
   const deleteFromCart = (index) => {
-    cartFromFile.splice(index, 1);
-    setCart(cartFromFile.slice());
-    localStorage.setItem("cart", cartFromFile);
+    cart.splice(index, 1);
+    setCart(cart.slice());
+    localStorage.setItem("cart", JSON.stringify(cart)); // uuendame ostukorvi
   }
 
   const calculateCartSum = () => {
     let sum = 0;
     
     cart.forEach(product => sum += product.price);
-    return sum;
+    return sum.toFixed(2);
   }
 
   return (
@@ -46,7 +49,7 @@ const Cart = () => {
           <div>{product.name}</div>
           <div>{product.description}</div>
           <div>{product.category}</div>
-          <div>{product.price} €</div>
+          <div>{product.price.toFixed(2)} €</div>
           <div>{product.active + 0}</div>
           <button onClick={() => deleteFromCart(id)}>x</button>
         </div>
@@ -64,6 +67,9 @@ const Cart = () => {
       }
 
       <div>{t("cart.total-sum")}: {calculateCartSum()} € </div>
+      
+      <ParcelMachines />
+      
     </div>
   )
 }
