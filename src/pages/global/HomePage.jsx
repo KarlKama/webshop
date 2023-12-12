@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Spinner } from 'react-bootstrap';
+import styles from "../../css/HomePage.module.css";
 //import productsFromFile from "../../data/products.json";
 
 
@@ -63,7 +64,7 @@ const HomePage = () => {
     setProducts(productsCopy);
   }
 
-  const addToCart = (product) => {
+  const addToCart = (productClicked) => {
     /* cartFromFile.push(product);
     localStorage.setItem("cart", cartFromFile); */
 
@@ -75,7 +76,15 @@ const HomePage = () => {
     // 5. panna tagasi localStoragesse (set abil ehk asend uue väärtusega vana)
 
     const cartLS = JSON.parse(localStorage.getItem("cart") || "[]"); // juhuks kui cart on tühi
-    cartLS.push(product);
+
+    const index = cartLS.findIndex(p => p.product.id === productClicked.id); // saan aru kas toode on juba ostukorvis
+    if (index >= 0) { // kui toode leitakse siis lisatakse 1 quantity juurde
+      cartLS[index].quantity++;
+    } 
+    else {
+      cartLS.push({"quantity": 1, "product": productClicked})
+    }
+
     localStorage.setItem("cart", JSON.stringify(cartLS));
   }
 
@@ -100,22 +109,24 @@ const HomePage = () => {
       </div>
         
       </div>
-      { 
-      products.map(product =>
-      <div key={product.id}>
-        <img src={product.image} alt="" />
-        <div>{product.id}</div>
-        <div>{product.name}</div>
-        <div>{product.price.toFixed(2)} €</div>
-        <div>{product.description}</div>
-        <div>{product.category}</div>
-        <div>{product.active}</div>
-        <Link to={"/product/" + product.id}>
-            <button>{t("home.detailed")}</button>
-        </Link>
-        <button onClick={() => addToCart(product)} >{t("home.add-to-cart")}</button>
+      <div className={styles.products}>
+        { 
+        products.map(product =>
+        <div className={styles.product} key={product.id}>
+          <img src={product.image} alt="" />
+          <div>{product.id}</div>
+          <div>{product.name}</div>
+          <div>{product.price.toFixed(2)} €</div>
+          <div>{product.description}</div>
+          <div>{product.category}</div>
+          <div>{product.active}</div>
+          <Link to={"/product/" + product.id}>
+              <button>{t("home.detailed")}</button>
+          </Link>
+          <button onClick={() => addToCart(product)} >{t("home.add-to-cart")}</button>
+        </div>
+        )}
       </div>
-      )}
       
     </div>
   )

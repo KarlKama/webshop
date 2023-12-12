@@ -1,0 +1,63 @@
+.product {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 10%;
+    border-bottom: 1px solid gray;
+    padding: 10px 0;
+}
+
+.image {
+    width: 100px;
+    height: 100px;
+}
+
+.name {
+    width: 120px;
+}
+
+.price {
+    width: 70px;
+}
+
+.button {
+    height: 40px;
+    width: 40px;
+    padding: 0;
+    background-color: transparent;
+    border: none;
+}
+
+.button img {
+    height: 30px;
+    width: 30px;
+}
+
+.quantity {
+    display: flex;
+    justify-content: space-between;
+    width: 150px;
+    border: 1px solid black;
+    border-radius: 20px;
+    height: 43px;
+
+}
+
+.quantity div {
+    margin: 7px;
+
+}
+
+.total {
+    width: 70px;
+}
+
+@media only screen and (max-width: 600px) {
+    .image {
+        width: 80px;
+        height: 80px;
+    }
+
+    .product {
+        margin: 0 3%;
+    }
+}
