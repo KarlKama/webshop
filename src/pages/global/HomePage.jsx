@@ -1,30 +1,31 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import productsFromFile from "../../data/products.json";
-//import cartFromFile from "../../data/cart.json";
+import { Spinner } from 'react-bootstrap';
+//import productsFromFile from "../../data/products.json";
 
-// NÕUDED
-// võimaldada minna SingleProduct lehele +
 
-// lisa localStorage-sse ostukorv
-// võiks läbi faili teha ehk lisada faili üks toode juurde +
-
-// Sorteerimine A-Z ja teistpidi +
-// Sorteerimine hind mõlemat pidi +
-
-// Kategooriate alusel filterdamine: +
-//    -star wars +
-//    -lego +
-//    -figure +
 
 const HomePage = () => {
   const { t } = useTranslation();
 
-  const [products, setProducts] = useState(productsFromFile);
-  const [productsCopy] = useState(productsFromFile);
+  const [products, setProducts] = useState([]);
+  //const [productsCopy] = useState(productsFromFile);
+  const [productsCopy, setDbProducts] = useState([]);
   const [nameSortToggle, setNameSortToggle] = useState(true); // kasutame selleks, et toggledada name sortimist
   const [priceSortToggle, setPriceSortToggle] = useState(true); // kasutame selleks, et toggledada hinna sortimist
+  const productsDbUrl = process.env.REACT_APP_PRODUCTS_DB_URL; // npm start-iga võtab .env.development.localist  npm run build võtab .env.production.localist, kui seal ei ole siis mõlemal juhul läheb järgmisena .env.localisse
+  const [loading, setLoading] = useState(true); // kui api päring toimub siis true
+
+  useEffect(() => {
+    fetch(productsDbUrl)
+      .then(res => res.json())
+      .then(json => {
+        setProducts(json);  // väljanäidatav HTMLis
+        setDbProducts(json); //et saada originaalset DB seisu
+        setLoading(false);
+      })
+  }, [productsDbUrl]);
 
   const sortByName = () => {
     let sortDesc = nameSortToggle;
@@ -78,6 +79,9 @@ const HomePage = () => {
     localStorage.setItem("cart", JSON.stringify(cartLS));
   }
 
+  if (loading) {
+    return <Spinner/>
+  }
 
   return (
     <div>

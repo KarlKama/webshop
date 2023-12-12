@@ -1,6 +1,7 @@
-import React, { useState,  useRef } from 'react'
-import productsFromFile from "../../data/products.json";
+import React, { useState,  useRef, useEffect } from 'react'
+//import productsFromFile from "../../data/products.json";
 import { Link } from 'react-router-dom';
+import { Spinner } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import {findIndex} from '../../util/productsUtil.js';
 
@@ -12,10 +13,25 @@ const MaintainProducts = () => {
     const { t } = useTranslation();
     const searchedRef = useRef();
 
-    const [products, setProducts] = useState(productsFromFile);
+    const [products, setProducts] = useState([]);
+
+    const [productsCopy, setDbProducts] = useState([]);
+    const productsDbUrl = process.env.REACT_APP_PRODUCTS_DB_URL; // npm start-iga võtab .env.development.localist  npm run build võtab .env.production.localist, kui seal ei ole siis mõlemal juhul läheb järgmisena .env.localisse
+    const [loading, setLoading] = useState(true); // kui api päring toimub siis true
+  
+    useEffect(() => {
+      fetch(productsDbUrl)
+        .then(res => res.json())
+        .then(json => {
+          setProducts(json);  // väljanäidatav HTMLis
+          setDbProducts(json); //et saada originaalset DB seisu
+          setLoading(false);
+        })
+    }, [productsDbUrl]);
+
 
     const searchFromProducts = () => {
-      const result = productsFromFile.filter(products => 
+      const result = productsCopy.filter(products => 
         products.name.toLowerCase().includes(searchedRef.current.value.toLowerCase()) || 
         products.description.toLowerCase().includes(searchedRef.current.value.toLowerCase()) ||
         products.id.toString().includes(searchedRef.current.value)     
@@ -25,9 +41,15 @@ const MaintainProducts = () => {
     }
 
     const deleteProduct = (id) => {
-      const index = findIndex(id, productsFromFile);
-      productsFromFile.splice(index, 1);
-      setProducts(productsFromFile.slice());
+      const index = findIndex(id, productsCopy);
+      productsCopy.splice(index, 1);
+      //setProducts(productsCopy.slice());
+      fetch(productsDbUrl, {"method": "PUT", "body": JSON.stringify(productsCopy)})
+      searchFromProducts();
+    }
+
+    if (loading) {
+      return <Spinner/>
     }
 
     return (

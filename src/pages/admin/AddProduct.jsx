@@ -1,7 +1,8 @@
-import React, { useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useRef, useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import productsFromFile from "../../data/products.json";
+//import productsFromFile from "../../data/products.json";
+import { Spinner } from 'react-bootstrap';
 
 
 // NÕUDED
@@ -17,7 +18,18 @@ const AddProduct = () => {
   const descriptionRef = useRef();
   const categoryRef = useRef();
   const isActiveRef = useRef();
-  const previousMaximumId = Math.max(...productsFromFile.map(product => product.id));
+
+  const [dbProducts, setDbProducts] = useState([]);
+  const productsDbUrl = process.env.REACT_APP_PRODUCTS_DB_URL; // npm start-iga võtab .env.development.localist  npm run build võtab .env.production.localist, kui seal ei ole siis mõlemal juhul läheb järgmisena .env.localisse
+
+
+  useEffect(() => {
+    fetch(productsDbUrl)
+      .then(res => res.json())
+      .then(json => {
+        setDbProducts(json); //et saada originaalset DB seisu
+      })
+  }, [productsDbUrl]);
 
   const addProduct = () => {
     if (nameRef.current.value === "") {
@@ -27,8 +39,10 @@ const AddProduct = () => {
     if (priceRef.current.value === "") {
       return
     }
+
+    const previousMaximumId = Math.max(...dbProducts.map(product => product.id));
   
-    productsFromFile.push(
+    dbProducts.push(
       {
         "id": previousMaximumId + 1,
         "image": imageRef.current.value,
@@ -39,12 +53,10 @@ const AddProduct = () => {
         "active": isActiveRef.current.checked,
       }
     )
-
-    navigate("/admin/products");
-
+    fetch(productsDbUrl, {"method": "PUT", "body": JSON.stringify(dbProducts)})
+      .then(() => navigate("/admin/products"));
     
   }
-  
 
   return (
     <div>
