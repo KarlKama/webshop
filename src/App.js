@@ -40,7 +40,9 @@ function App() {
         <Route path='login' element = { <Login/> } />
         <Route path='signup' element = { <Signup/> } />
       </Routes>
-      
+
+      <br />
+      {process.env.REACT_APP_ENVIRONMENT} 
     </div>
   );
 }

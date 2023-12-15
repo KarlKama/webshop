@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next';
 import ParcelMachines from '../../components/cart/ParcelMachines';
 import styles from "../../css/Cart.module.css";
+import Payment from '../../components/cart/Payment';
 
 
 //NÕUDED
@@ -96,6 +97,8 @@ const Cart = () => {
       <div>{t("cart.total-sum")}: {calculateCartSum()} € </div>
       
       <ParcelMachines />
+
+      <Payment cartSum={calculateCartSum()} />
       
     </div>
   )
