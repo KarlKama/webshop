@@ -2,17 +2,28 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useContext } from 'react';
+import { CartSumContext } from '../store/CartSumContext';
+import { AuthContext } from '../store/AuthContext';
 
 
 const NavigationBar = () => {
 
     const { t, i18n } = useTranslation();
+    const {cartSum, cartDiffernetItems, cartTotalItems} = useContext(CartSumContext);
+    const { isLoggedIn, logout } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const changeLanguage = (newLang) => {
         i18n.changeLanguage(newLang);
         localStorage.setItem("language", newLang);
+    }
+
+    const logoutAndNavigate = () => {
+        logout();
+        navigate("/");
     }
 
     return (
@@ -22,7 +33,7 @@ const NavigationBar = () => {
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                 <Nav className="me-auto">
-                    <Nav.Link as={Link} to="/admin">{t("nav.admin")}</Nav.Link>
+                    {isLoggedIn && <Nav.Link as={Link} to="/admin">{t("nav.admin")}</Nav.Link>}
                     <Nav.Link as={Link} to="/shops">{t("nav.shops")}</Nav.Link>
                     <Nav.Link as={Link} to="/contact">{t("nav.contact")}</Nav.Link>
                     <Nav.Link as={Link} to="/cart">{t("nav.cart")}</Nav.Link>
@@ -33,8 +44,16 @@ const NavigationBar = () => {
                     </NavDropdown>
                 </Nav>
                 <Nav>
-                    <Nav.Link as={Link} to="/login">{t("nav.login")}</Nav.Link>
-                    <Nav.Link as={Link} to="/signup">{t("nav.signup")}</Nav.Link>
+                    <span>{cartDiffernetItems} / {cartTotalItems} tk</span> &nbsp;
+                    <span>{cartSum} €</span>
+                    {!isLoggedIn ?
+                    <>
+                        <Nav.Link as={Link} to="/login">{t("nav.login")}</Nav.Link>
+                        <Nav.Link as={Link} to="/signup">{t("nav.signup")}</Nav.Link>
+                    </> :
+                                        
+                    <Nav.Link onClick={logoutAndNavigate}>Log out</Nav.Link>                    
+                    }
                 </Nav>
                 </Navbar.Collapse>
             </Container>

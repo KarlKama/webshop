@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styles from "../../css/HomePage.module.css";
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { CartSumContext } from '../../store/CartSumContext';
+import { calculateCartSum, calculateTotalItems } from '../../util/calculationsUtil.js';
 
 const Product = ({product}) => {
     const { t } = useTranslation();
+    const { setCartSum, setCartDifferentItems, setCartTotalItems } = useContext(CartSumContext);
 
     const addToCart = (productClicked) => {
         /* cartFromFile.push(product);
@@ -26,7 +29,10 @@ const Product = ({product}) => {
         else {
           cartLS.push({"quantity": 1, "product": productClicked})
         }
-    
+        setCartSum(calculateCartSum(cartLS));
+        setCartDifferentItems(cartLS.length);
+        setCartTotalItems(calculateTotalItems(cartLS));
+
         localStorage.setItem("cart", JSON.stringify(cartLS));
     }
 
