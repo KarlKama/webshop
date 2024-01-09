@@ -1,6 +1,5 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import productsFromFile from "../../data/products.json";
 import { useTranslation } from 'react-i18next';
 import {findProduct, findIndex} from '../../util/productsUtil.js';
 
@@ -24,16 +23,35 @@ const EditProduct = () => {
   const categoryRef = useRef();
   const isActiveRef = useRef();
 
-  const foundProduct = findProduct(id, productsFromFile); // leiab toote
+  const [dbProducts, setDbProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const productsDbUrl = process.env.REACT_APP_PRODUCTS_DB_URL;
+  const categoriesDbUrl = process.env.REACT_APP_CATEGORIES_DB_URL;
+
+  useEffect(() => {
+    fetch(productsDbUrl)
+      .then(res => res.json())
+      .then(json => {
+        setDbProducts(json); //et saada originaalset DB seisu
+      })
+    fetch(categoriesDbUrl)
+    .then(res => res.json())
+    .then(json => {
+      setCategories(json); //et saada originaalset DB seisu
+    })
+  }, [productsDbUrl, categoriesDbUrl]);
+
+
+  const foundProduct = findProduct(id, dbProducts); // leiab toote
   if (foundProduct === undefined) {
     return <div>{t('product.error.notfound')}</div>
   }
   
-  const index = findIndex(foundProduct.id, productsFromFile); // leiab toote indexi, et seda muuta
+  const index = findIndex(foundProduct.id, dbProducts); // leiab toote indexi, et seda muuta
   
   const commitChanges = () => {
 
-    productsFromFile[index] = {
+    dbProducts[index] = {
       "id": foundProduct.id,
       "image": imageRef.current.value,
       "name": nameRef.current.value,
@@ -43,7 +61,8 @@ const EditProduct = () => {
       "active": isActiveRef.current.checked
     }
 
-    navigate("/admin/products");
+    fetch(productsDbUrl, {"method": "PUT", "body": JSON.stringify(dbProducts)})
+      .then(() => navigate("/admin/products"));
 
   }  
 
@@ -63,7 +82,9 @@ const EditProduct = () => {
       <input ref={descriptionRef} type="text" defaultValue={foundProduct.description} /> <br />
 
       <label>{t('product.category')}</label> <br />
-      <input ref={categoryRef} type="text" defaultValue={foundProduct.category} /> <br />
+      <select ref={categoryRef} defaultValue={foundProduct.category}>
+        {categories.map(category => <option key={category.name}>{category.name}</option>)}
+      </select> <br />
 
       <label>{t('product.active')}</label> <br />
       <input ref={isActiveRef} type="checkbox" defaultChecked={foundProduct.active} /> <br />

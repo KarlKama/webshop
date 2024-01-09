@@ -13,7 +13,7 @@ const NavigationBar = () => {
 
     const { t, i18n } = useTranslation();
     const {cartSum, cartDiffernetItems, cartTotalItems} = useContext(CartSumContext);
-    const { isLoggedIn, logout } = useContext(AuthContext);
+    const { loggedInUser, isLoggedIn, logout } = useContext(AuthContext);
     const navigate = useNavigate();
 
     const changeLanguage = (newLang) => {
@@ -37,6 +37,7 @@ const NavigationBar = () => {
                     <Nav.Link as={Link} to="/shops">{t("nav.shops")}</Nav.Link>
                     <Nav.Link as={Link} to="/contact">{t("nav.contact")}</Nav.Link>
                     <Nav.Link as={Link} to="/cart">{t("nav.cart")}</Nav.Link>
+                    <Nav.Link as={Link} to="/admin/profile">{t("nav.profile")}</Nav.Link>
                     <NavDropdown title={t("nav.lang")} id="collasible-nav-dropdown">
                         <NavDropdown.Item onClick={() => changeLanguage("en")}>English</NavDropdown.Item>
                         <NavDropdown.Item onClick={() => changeLanguage("et")}>Eesti</NavDropdown.Item>
@@ -44,6 +45,9 @@ const NavigationBar = () => {
                     </NavDropdown>
                 </Nav>
                 <Nav>
+                    <div>{loggedInUser?.displayName}</div> {/* kui on null siis edasi ei tehta ja laeb jooksvalt */}
+                    <img style={{"height": "40px"}} src={loggedInUser?.photoUrl} alt="" />
+                    <br />
                     <span>{cartDiffernetItems} / {cartTotalItems} tk</span> &nbsp;
                     <span>{cartSum} €</span>
                     {!isLoggedIn ?

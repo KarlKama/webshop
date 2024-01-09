@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 //import productsFromFile from "../../data/products.json";
-import { Spinner } from 'react-bootstrap';
+//import { Spinner } from 'react-bootstrap';
 
 
 // NÕUDED
@@ -20,7 +20,9 @@ const AddProduct = () => {
   const isActiveRef = useRef();
 
   const [dbProducts, setDbProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const productsDbUrl = process.env.REACT_APP_PRODUCTS_DB_URL; // npm start-iga võtab .env.development.localist  npm run build võtab .env.production.localist, kui seal ei ole siis mõlemal juhul läheb järgmisena .env.localisse
+  const categoriesDbUrl = process.env.REACT_APP_CATEGORIES_DB_URL;
 
 
   useEffect(() => {
@@ -29,7 +31,12 @@ const AddProduct = () => {
       .then(json => {
         setDbProducts(json); //et saada originaalset DB seisu
       })
-  }, [productsDbUrl]);
+    fetch(categoriesDbUrl)
+    .then(res => res.json())
+    .then(json => {
+      setCategories(json); //et saada originaalset DB seisu
+    })
+  }, [productsDbUrl, categoriesDbUrl]);
 
   const addProduct = () => {
     if (nameRef.current.value === "") {
@@ -73,7 +80,9 @@ const AddProduct = () => {
       <input ref={descriptionRef} type="text" /> <br />
 
       <label>{t("product.category")}</label> <br />
-      <input ref={categoryRef} type="text" /> <br />
+      <select ref={categoryRef} >
+        {categories.map(category => <option key={category.name}>{category.name}</option>)}
+      </select> <br />
 
       <label>{t("product.active")}</label> <br />
       <input ref={isActiveRef} type="checkbox"  /> <br />

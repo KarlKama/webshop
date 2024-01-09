@@ -37,7 +37,7 @@ const MaintainCategories = () => {
       {
       categories.map(
         (category, index) => 
-          <div>
+          <div key={category.name}>
             {category.name} 
             <button onClick={() => remove(index)}>x</button>
           </div>)

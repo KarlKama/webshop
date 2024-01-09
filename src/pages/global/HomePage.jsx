@@ -10,7 +10,7 @@ import Product from '../../components/home/Product';
 
 
 const HomePage = () => {
-
+ 
   const [products, setProducts] = useState([]);
   //const [productsCopy] = useState(productsFromFile);
   const [productsCopy, setDbProducts] = useState([]);

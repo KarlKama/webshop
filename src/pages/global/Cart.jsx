@@ -9,14 +9,6 @@ import { CartSumContext } from '../../store/CartSumContext';
 import { calculateCartSum, calculateTotalItems } from '../../util/calculationsUtil.js';
 
 
-//NÕUDED
-// võtta failist kogu ostukorv +
-// kuvada välja + 
-// võimaldada ühte ostukorvist kustutada +
-// ostukorvi tühjendada +
-// dünaamiline väljakuvamine ehk kui ostukorv on tühi, näidatakse midagi muud +
-// ostukorvi kogusumma +
-
 const Cart = () => {
 
   const [cart, setCart] = useState(JSON.parse(localStorage.getItem("cart") || "[]"));
