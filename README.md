@@ -1,5 +1,7 @@
 # Alguses
 npx create-react-app webshop
+# Kui Typescripti projekt siis
+npx create-react-app my-app --template typescript
 # Et lisada routing
 npm i react-router-dom
 # Lisada Bootstrap

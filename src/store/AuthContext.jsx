@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useCallback, useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // tema kaudu hakkan võtma mida context väljastab
@@ -12,26 +12,22 @@ export const AuthContext = createContext({ // näitab kõiki muudetavaid mida se
 export function AuthContextProvider({ children }) { // children lisa et ülejäänud app tuleks ka läbi
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [loggedInUser, setloggedInUser] = useState(null);
+    const navigate = useNavigate();
     const url = "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=" + process.env.REACT_APP_FIREBASE_WEB_API_KEY;
+    const refreshTokenUrl = "https://securetoken.googleapis.com/v1/token?key=" + process.env.REACT_APP_FIREBASE_WEB_API_KEY;
+    const [isLogoutModal, setLogoutModal] = useState(false);
+    const checkLoginId = useRef();
 
-    useEffect(() => {
-      const isOk = validateAuthData();
-      if (isOk) {
-        getUser(false);
-      }
-    }, [url])
-
-    const validateAuthData = () => {
+    const validateAuthData = useCallback(() => { // sama kui useMemo aga funktsioonidele
       if (sessionStorage.getItem("expiresIn") === null ||
           sessionStorage.getItem("refreshToken") === null ) {
             logout();
             return false;
           }
 
-      if (true || Date.now() > Number(sessionStorage.getItem("expiresIn"))) { // panna true siis uuendab iga refreshiga
-        //await
+      /* if (true || Date.now() > Number(sessionStorage.getItem("expiresIn"))) { // panna true siis uuendab iga refreshiga
         updateIdToken();
-      }
+      } */
 
       if (sessionStorage.getItem("token") === null ) {
         logout();
@@ -39,11 +35,24 @@ export function AuthContextProvider({ children }) { // children lisa et ülejä�
       }
       
       return true;
-    }
+    }, []);
 
-    const navigate = useNavigate();
+    const checkLogin = useCallback(() => {
 
-    const getUser = (isNavigated) => {
+      console.log(new Date(Number(sessionStorage.getItem("expiresIn"))))
+
+      if (checkLoginId.current) {
+        clearTimeout(checkLoginId.current);
+      }
+      if( Date.now() > Number(sessionStorage.getItem("expiresIn"))) {
+          logout();
+          setLogoutModal(true);
+      } else {
+        checkLoginId.current = setTimeout(checkLogin, 1000);
+      }
+    }, [checkLoginId]);
+
+    const getUser = useCallback((isNavigated) => {
       
       const payload = {
         "idToken": sessionStorage.getItem("token")
@@ -64,10 +73,9 @@ export function AuthContextProvider({ children }) { // children lisa et ülejä�
             logout();
           }
         })
-    }
+    }, [checkLogin, navigate, url]);
 
-    const refreshTokenUrl = "https://securetoken.googleapis.com/v1/token?key=" + process.env.REACT_APP_FIREBASE_WEB_API_KEY;
-
+    
     const updateIdToken = async () => {
       
       const payload = {
@@ -105,23 +113,12 @@ export function AuthContextProvider({ children }) { // children lisa et ülejä�
       sessionStorage.clear();// kustutab kõik ära
     }
 
-    const [isLogoutModal, setLogoutModal] = useState(false);
-
-    let checkLoginId;
-    const checkLogin = () => {
-
-      console.log(new Date(Number(sessionStorage.getItem("expiresIn"))))
-
-      if (checkLoginId) {
-        clearTimeout(checkLoginId);
+    useEffect(() => {
+      const isOk = validateAuthData();
+      if (isOk) {
+        getUser(false);
       }
-      if( Date.now() > Number(sessionStorage.getItem("expiresIn"))) {
-          logout();
-          setLogoutModal(true);
-      } else {
-        checkLoginId = setTimeout(checkLogin,1000);
-      }
-    }
+    }, [url, getUser, validateAuthData])
 
     return (
         <AuthContext.Provider value={{

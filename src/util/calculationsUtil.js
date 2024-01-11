@@ -1,7 +1,7 @@
 export const calculateCartSum = (cart) => {
-    let sum = 0;
+    /* let sum = 0;
     cart.forEach((p) => (sum += p.product.price * p.quantity));
-    return sum.toFixed(2);
+    return sum.toFixed(2); */
 }
 
 export const calculateTotalItems = (cart) => {

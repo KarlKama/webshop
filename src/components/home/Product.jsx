@@ -22,12 +22,12 @@ const Product = ({product}) => {
     
         const cartLS = JSON.parse(localStorage.getItem("cart") || "[]"); // juhuks kui cart on tühi
     
-        const index = cartLS.findIndex(p => p.product.id === productClicked.id); // saan aru kas toode on juba ostukorvis
+        const index = cartLS.findIndex(p => p.productId === productClicked.id); // saan aru kas toode on juba ostukorvis
         if (index >= 0) { // kui toode leitakse siis lisatakse 1 quantity juurde
           cartLS[index].quantity++;
         } 
         else {
-          cartLS.push({"quantity": 1, "product": productClicked})
+          cartLS.push({"quantity": 1, "productId": productClicked.id})
         }
         setCartSum(calculateCartSum(cartLS));
         setCartDifferentItems(cartLS.length);

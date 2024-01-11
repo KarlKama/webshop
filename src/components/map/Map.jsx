@@ -16,7 +16,7 @@ L.Marker.prototype.options.icon = DefaultIcon;
 
 const Map = (props) => {
 
-    const [shops, setShops] = useState([
+    const [shops] = useState([//võta ntks failist
         {lng: 59.4231, lat: 24.7991, name: "Ülemiste keskus", openTime: "9-20"},
         {lng: 59.4277, lat: 24.7193, name: "Kristiine keskus", openTime: "10-21"},
         {lng: 58.3785, lat: 26.7318, name: "Tasku keskus", openTime: "10-21"}
